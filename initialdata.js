@@ -202,7 +202,7 @@ function buildTransactions() {
         //endDate.setTime(snapshotDate.getTime() + FORECAST_DAYS*MSINDAY);
         console.log('endDate='+endDate.toLocaleDateString());
 
-        var iterations = 5; // stop after 10 iterations  TODO: remove this hack
+        var iterations = 15; // stop after 10 iterations  TODO: remove this hack
 
         while (evaluationDate<endDate) {
             if (evaluationDate>=snapshotDate) {
@@ -275,6 +275,7 @@ function buildTransactions() {
         var thisSnapshotDate = new Date(snapshot["date"]);
         var thisWeek = getYearWeek(thisSnapshotDate);
         var thisMonth = getYearMonth(thisSnapshotDate);
+        var weekKeys = Object.keys(weekTransactions);
         var weekList = weekTransactions.keys;
         var monthList = monthTransactions.keys;
 
@@ -295,7 +296,6 @@ function buildTransactions() {
             account["monthBalances"] = monthBalances;
 
             var previousWeekBalance = thisWeeksBalance;
-            var weekKeys = Object.keys(weekTransactions);
 
             //console.log('week keys='+weekKeys);
             weekKeys.forEach( function(week,index,array) {
@@ -331,12 +331,70 @@ function buildTransactions() {
                             ' tx desc='+tx["transactionDescription"]);
                     }
 
-                    weekBalances[week] = currentBalance;
-
-                    previousWeekBalance = currentBalance;
                 });
+                console.log('week balance(outside)='+currentBalance);
+                weekBalances[week] = currentBalance;
+
+                previousWeekBalance = currentBalance;
             });
             //console.log('checking weeks balance='+getWeekBalance(account,"2013W33"));
+        });  // accounts
+        var seriesData = new Array();
+
+        sourceAccounts.forEach( function( account ) {
+            var data = new Array();
+            var weekBalances = account["weekBalances"];
+
+            weekKeys.forEach(function(week) {
+                var thisWeekBalance=weekBalances[week];
+                if (undefined==thisWeekBalance) thisWeekBalance=0.0;
+                console.log('week balance='+thisWeekBalance);
+                data.push(thisWeekBalance);
+            });
+            console.log('weeks='+data);
+            seriesData.push( {
+                name: account["name"],
+                data: data
+            });
+        });
+        console.log(JSON.stringify(seriesData));
+        var fchart = new Highcharts.Chart( {
+            chart: {
+                renderTo: 'forecast',
+                type: 'column'
+            },
+            title: {
+                text: 'Financial Forecast'
+            },
+            subtitle: {
+                text: '2013'
+            },
+            xAxis: {
+                categories: weekKeys,
+                tickInterval: 10
+            },
+            yAxis: {
+                title: {
+                    text: 'Dollars ($k)'
+                },
+                min: 0
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal',
+                    lineWidth: 2
+                },
+                column: {
+                    dataLabels: {
+                        enabled: false,
+                        color: 'white',
+                        x: 0,
+                        y: 5
+
+                    }
+                }
+            },
+            series: seriesData
         });
 
         // test
