@@ -3,13 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="bf2cd3de-001b-4c15-82f3-2bd34eed8200" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/initialdata.js" afterPath="$PROJECT_DIR$/initialdata.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="fsquared.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="bf2cd3de-001b-4c15-82f3-2bd34eed8200" time="1376775474093" ignored="false" />
-    <file path="/initialdata.js" changelist="bf2cd3de-001b-4c15-82f3-2bd34eed8200" time="1376799797580" ignored="false" />
+    <file path="/Dummy.txt" changelist="bf2cd3de-001b-4c15-82f3-2bd34eed8200" time="1376800021246" ignored="false" />
+    <file path="/initialdata.js" changelist="bf2cd3de-001b-4c15-82f3-2bd34eed8200" time="1376800359168" ignored="false" />
     <file path="/index.html" changelist="bf2cd3de-001b-4c15-82f3-2bd34eed8200" time="1376776223049" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="bf2cd3de-001b-4c15-82f3-2bd34eed8200" time="1376800376012" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +32,7 @@
       <file leaf-file-name="initialdata.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/initialdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="76" column="61" selection-start="3147" selection-end="3147" vertical-scroll-proportion="-2.4466193">
+            <state line="379" column="7" selection-start="15449" selection-end="15449" vertical-scroll-proportion="0.8985765">
               <folding>
                 <element signature="e#0#157#0" expanded="false" />
                 <element signature="e#2071#3102#0" expanded="false" />
@@ -205,12 +205,18 @@
       <created>1376774408130</created>
       <updated>1376774408130</updated>
     </task>
+    <task id="LOCAL-00001" summary="first runModel version (working but limited)">
+      <created>1376800037085</created>
+      <updated>1376800037085</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24986821" sideWeight="0.6707589" order="1" side_tool="false" content_ui="tabs" />
@@ -219,7 +225,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32924107" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32924107" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -271,7 +277,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="LAST_COMMIT_MESSAGE" value="first runModel version (working but limited)" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -285,6 +291,7 @@
     <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="first runModel version (working but limited)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -308,7 +315,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/initialdata.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="61" selection-start="3147" selection-end="3147" vertical-scroll-proportion="-2.4466193">
+        <state line="379" column="7" selection-start="15449" selection-end="15449" vertical-scroll-proportion="0.8985765">
           <folding>
             <element signature="e#0#157#0" expanded="false" />
             <element signature="e#2071#3102#0" expanded="false" />

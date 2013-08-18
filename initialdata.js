@@ -375,5 +375,7 @@ function buildTransactions() {
 }
 
 $(document).ready( function() {
-    $("#loaddata").click(buildTransactions());
+    $("#loaddata").click(function() {
+        buildTransactions();
+    });
 });
