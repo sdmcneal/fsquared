@@ -31,8 +31,11 @@ var modelData =
             date: "08/17/2013",
             data:
                 [
-                    { description: "paycheck", startDate: "09/14/2013", scheduleType: "biweekly", amountType:"Absolute", amount: "1500.00", fromAccount:"none", toAccount:"Checking" },
-                    { description: "investment growth", startDate: "now", scheduleType: "weekly", amountType:"Percent Of Balance", amountOption: "5%", fromAccount: "none", toAccount:"Brokerage"},
+                    { description: "paycheck", startDate: "09/14/2013", scheduleType: "biweekly", amountType:"Absolute", amount: "3500.00", fromAccount:"none", toAccount:"Checking" },
+                    { description: "paycheck - J", startDate: "09/30/2013", scheduleType: "monthly", amountType:"Absolute", amount: "5000.00", fromAccount:"none", toAccount:"Checking" },
+                    { description: "mortgage", startDate: "10/01/2013", scheduleType: "monthly", amountType:"Absolute", amount: "2700.00", fromAccount:"Checking", toAccount:"none" },
+                    { description: "DirecTV", startDate: "09/15/2013", scheduleType: "monthly", amountType:"Absolute", amount: "180.00", fromAccount:"Checking", toAccount:"none" },
+                    { description: "investment growth", startDate: "now", scheduleType: "weekly", amountType:"Percent of Balance", amount: "5.0", fromAccount: "none", toAccount:"Brokerage"},
                     { description: "transfer from checking to brokerage", startDate: "now", scheduleType: "weekly", amountType: "Absolute", amount: "100.00", fromAccount: "Checking", toAccount: "Brokerage"}
                 ]
         }
@@ -171,12 +174,12 @@ function buildTransactions() {
             yearMonth=getYearMonth(workingDate);
 
             weekTransactions[yearWeek] = new Array();
-            console.log('seeding '+yearWeek);
+            //console.log('seeding '+yearWeek);
 
             if (yearMonth!=lastYearMonth) {
                 monthTransactions[yearMonth] = new Array();
                 lastYearMonth=yearMonth;
-                console.log('seeding '+yearMonth);
+                //console.log('seeding '+yearMonth);
             }
             workingDate.setTime(workingDate.getTime()+7*MSINDAY);
         }
@@ -211,6 +214,7 @@ function buildTransactions() {
                     var account = accounts[fromAccount];
 
                     newTransaction.date = evaluationDate;
+                    newTransaction.account = fromAccount;
                     newTransaction.transactionType = "withdrawal";
                     newTransaction.transactionDescription = entry["description"];
                     newTransaction.amount = parseFloat(entry["amount"]);
@@ -229,6 +233,7 @@ function buildTransactions() {
                     var account = accounts[toAccount];
 
                     newTransaction.date = evaluationDate;
+                    newTransaction.account = toAccount;
                     newTransaction.transactionType = "deposit";
                     newTransaction.transactionDescription = entry["description"];
                     newTransaction.amount = parseFloat(entry["amount"]);
@@ -251,6 +256,91 @@ function buildTransactions() {
             if (null==evaluationDate) break;
             if (0== --iterations) break;  // TODO: remove hack
         }
+    }
+
+    function getWeekBalance(account,week) {
+        var balances = account["weekBalances"];
+        if (balances) {
+            return balances[week];
+        } else {
+            return null;
+        }
+    }
+    // accountBalances["Checking"]["2013FW33"] = balance
+    function runModel(snapshot,weekTransactions,monthTransactions) {
+        // todo: take model as argument
+        var sourceAccounts = snapshot["accounts"];
+        var accountLookup = new Object();
+
+        var thisSnapshotDate = new Date(snapshot["date"]);
+        var thisWeek = getYearWeek(thisSnapshotDate);
+        var thisMonth = getYearMonth(thisSnapshotDate);
+        var weekList = weekTransactions.keys;
+        var monthList = monthTransactions.keys;
+
+        sourceAccounts.forEach(function(account,index,array) {
+            var thisWeeksBalance = parseFloat(account["balance"]);
+            if (NaN==thisWeeksBalance) {
+                thisWeeksBalance = 0.0;
+            }
+            var weekBalances = new Object();
+            var monthBalances = new Object();
+            var accountName = account["name"];
+
+            weekBalances[thisWeek] = thisWeeksBalance;
+            monthBalances[thisMonth] = thisWeeksBalance;
+
+            accountLookup[accountName] = account;
+            account["weekBalances"] = weekBalances;
+            account["monthBalances"] = monthBalances;
+
+            var previousWeekBalance = thisWeeksBalance;
+            var weekKeys = Object.keys(weekTransactions);
+
+            //console.log('week keys='+weekKeys);
+            weekKeys.forEach( function(week,index,array) {
+                var thisWeeksTransactions = weekTransactions[week];
+                var currentBalance = previousWeekBalance;
+
+                thisWeeksTransactions.forEach(function(tx,index,array) {
+                    if (tx["account"]==accountName) {
+                        switch (tx["amountType"]) {
+                            case "Absolute":
+                                switch (tx["transactionType"]) {
+                                    case "deposit":
+                                        currentBalance += tx["amount"];
+                                        break;
+                                    case "withdrawal":
+                                        currentBalance -= tx["amount"];
+                                        break;
+                                }
+                                break;
+                            case "Percent of Balance":
+                                console.log('percent of balance, amount='+tx["amount"]/52.0);
+                                switch (tx["transactionType"]) {
+                                    case "deposit":
+                                        currentBalance += previousWeekBalance * tx["amount"]/52.0/100.0;
+                                        break;
+                                    case "withdrawal":
+                                        currentBalance -= previousWeekBalance * tx["amount"]/52.0/100.0;
+                                        break;
+                                }
+                                break;
+                        }
+                        console.log('week '+week+' balances for account '+accountName+' is '+currentBalance+
+                            ' tx desc='+tx["transactionDescription"]);
+                    }
+
+                    weekBalances[week] = currentBalance;
+
+                    previousWeekBalance = currentBalance;
+                });
+            });
+            //console.log('checking weeks balance='+getWeekBalance(account,"2013W33"));
+        });
+
+        // test
+
     }
     console.log("Building transactions");
 
@@ -278,8 +368,10 @@ function buildTransactions() {
     console.log('accounts["Checking"]='+JSON.stringify(Object.keys(accounts)));
     console.log('week='+snapshotDate.getWeek()+' week year='+snapshotDate.getWeekYear());
     console.log('yearweek='+getYearWeek(new Date(2013,01,01)));
-
     console.log('transactions for checking by week:' +JSON.stringify(weekTransactions));
+    runModel(currentSnapshot,weekTransactions,monthTransactions);
+
+
 }
 
 $(document).ready( function() {
