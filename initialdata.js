@@ -157,7 +157,8 @@ function buildTransactions() {
         return (year + "-" + ("00"+month).substr(-2));
     }
     function seedCalendar() {
-        var workingDate = snapshotDate;
+        var workingDate = new Date(snapshotDate.getTime());
+
         var endDate = new Date();
         endDate.setTime(workingDate.getTime()+FORECAST_DAYS*MSINDAY*2);
 
@@ -183,18 +184,19 @@ function buildTransactions() {
     function addEntry(entry,index,array) {
         console.log('adding entry = '+ JSON.stringify(entry));
 
+        console.log("snapshot date="+snapshotDate.toLocaleDateString());
         var evaluationDate = new Date();
 
         if (entry["startDate"] != "now"){
             evaluationDate = new Date(entry["startDate"]);
         } else {
-            evaluationDate = snapshotDate;
+            evaluationDate.setTime(snapshotDate.getTime());
         }
 
         console.log('evalDate='+evaluationDate.toDateString());
 
-        var endDate = new Date();
-        endDate.setTime(snapshotDate.getTime() + FORECAST_DAYS*MSINDAY);
+        var endDate = new Date(2014,8,1);
+        //endDate.setTime(snapshotDate.getTime() + FORECAST_DAYS*MSINDAY);
         console.log('endDate='+endDate.toLocaleDateString());
 
         var iterations = 5; // stop after 10 iterations  TODO: remove this hack
@@ -245,7 +247,7 @@ function buildTransactions() {
                     monthTransactions[newTransaction.yearMonth].push(newTransaction);
                 }
             }
-            var evaluationDate=calcNextDate(evaluationDate,entry["scheduleType"],entry["scheduleOption"]);
+            evaluationDate=calcNextDate(evaluationDate,entry["scheduleType"],entry["scheduleOption"]);
             if (null==evaluationDate) break;
             if (0== --iterations) break;  // TODO: remove hack
         }
@@ -269,6 +271,7 @@ function buildTransactions() {
     seedCalendar();
     console.log('week keys='+ weekTransactions.keys);
     var currentModel = modelData[modelData.length-1];
+    console.log("snapshot date="+snapshotDate.toLocaleDateString());
     var currentModelData = currentModel["data"];
     currentModelData.forEach(addEntry);
 
