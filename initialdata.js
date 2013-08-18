@@ -375,6 +375,65 @@ function buildTransactions() {
 }
 
 $(document).ready( function() {
+    function formatWithLineBreaks(str) {
+        var words = str.split(' ');
+        var lines = [];
+        var line = '';
+        $.each(words, function(idx, word) {
+            if (line.length + word.length > 25) {
+                lines.push(line);
+                line = '';
+            }
+            line += word + ' ';
+        });
+        lines.push(line);
+        return lines.join('<br/>');
+    }
+
+    fchart = new Highcharts.Chart( {
+        chart: {
+            renderTo: 'forecast',
+            type: 'column'
+        },
+        title: {
+            text: 'Financial Forecast'
+        },
+        subtitle: {
+            text: '2013'
+        },
+        xAxis: {
+            categories: ['Today','Aug 6','Aug 13','Aug 20','Aug 27','Sep 4'],
+            tickInterval: 1
+        },
+        yAxis: {
+            title: {
+                text: 'Dollars ($k)'
+            },
+            min: 0
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal',
+                lineWidth: 2
+            },
+            column: {
+                dataLabels: {
+                    enabled: true,
+                    color: 'white',
+                    x: 0,
+                    y: 5
+
+                }
+            }
+        },
+        series: [{
+            name: 'Checking',
+            data: [1100,1200,1300,1400,1500,1600]
+        }, {
+            name: 'Brokerage',
+            data: [1100,1200,1300,1400,1500,1600]
+        }]
+    });
     $("#loaddata").click(function() {
         buildTransactions();
     });
